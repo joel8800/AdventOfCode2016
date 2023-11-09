@@ -1,72 +1,57 @@
-﻿
-using System.Net.Security;
-using System.Security.Cryptography;
-
-Console.WriteLine("Day01: No Time for a Taxicab");
+﻿Console.WriteLine("Day01: No Time for a Taxicab");
 
 string[] input = File.ReadAllText("input.txt").Split(',', StringSplitOptions.TrimEntries);
 
-List<(char dir, int dist)> directions = new();
-List<(int xPos, int yPos)> locations = new();
-
-int facing = 0;
-int x = 0;
-int y = 0;
+int dir = 0, x = 0, y = 0;
+List<(int x, int y)> visited = new();
 
 foreach (string inst in input)
 {
-    char dir = inst[0];
+    char turn = inst[0];
     int dist = int.Parse(inst[1..]);
-    directions.Add((dir, dist));
+
+    (x, y, dir) = DoInstruction(x, y, dir, turn, dist, visited);
+    //Console.WriteLine($"{turn} {dist}: now facing:{dir} at x:{x} y:{y}");
 }
+int hqDistance = ManhattanDistance(x, y);
 
-int xRep = 0;
-int yRep = 0;
-bool repeat = false;
+// LINQ query
+// check each XY, count number of occurances, return first XY that has more than 1
+var firstTwiceVisit = visited.First(xy => visited.Count(loc => (loc == xy)) > 1);
+int firstTwiceDist = ManhattanDistance(firstTwiceVisit.x, firstTwiceVisit.y);
 
-foreach ((char dir, int dist) in directions)
-{
-    facing = ChangeDirection(dir, facing);
-
-    switch (facing)
-    {
-        case 0:
-            y += dist; break;
-        case 1:
-            x += dist; break;
-        case 2:
-            y -= dist; break;
-        case 3:
-            x -= dist; break;
-    }
-
-    if (locations.Contains((x, y)) && !repeat)
-    {
-        xRep = x;
-        yRep = y;
-        repeat = true;
-    }
-
-    locations.Add((x, y));
-    Console.WriteLine($"{dir} {dist}: now facing:{facing} at x:{x} y:{y}");
-}
-
-int distance = Math.Abs(x) + Math.Abs(y);
-int repeatDist = Math.Abs(xRep) + Math.Abs(yRep);
-
-Console.WriteLine($"Part1: {distance}");
-Console.WriteLine($"Part2: {repeatDist}");
+Console.WriteLine($"Part1: {hqDistance}");
+Console.WriteLine($"Part2: {firstTwiceDist}");
 
 //============================================================================
 
-int ChangeDirection(char dir, int facing)
+int ManhattanDistance(int x, int y)
 {
-    if (dir == 'R')
-        facing += 1;
-    else
-        facing += 3;
-
-    facing %= 4;
-
-    return facing;
+    return Math.Abs(x) + Math.Abs(y);
 }
+
+(int x, int y, int d) DoInstruction(int x, int y, int direction, char turn, int distance, List<(int x, int y)> visited)
+{
+    // N = 0
+    direction += turn == 'R' ? 1 : 3;
+    direction %= 4;
+
+    for (int i = 0; i < distance; i++)
+    {
+        switch (direction)
+        {
+            case 0:
+                y++; break;
+            case 1:
+                x++; break;
+            case 2:
+                y--; break;
+            case 3:
+                x--; break;
+        }
+        visited.Add((x, y));
+    }
+
+    return (x, y, direction);
+}
+
