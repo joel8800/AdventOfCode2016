@@ -4,7 +4,7 @@
 
 #### Progress:
 <img style="display: block; margin-left: auto; margin-right: auto; width: 100%;"
-	src="https://progress-bar.dev/12/?scale=50&title=StarsCollected&width=700&suffix=/50"
+	src="https://progress-bar.dev/14/?scale=50&title=StarsCollected&width=700&suffix=/50"
 	alt="Progress Bar">
 </img>
 | Day | Status | Source | Solution Notes |
@@ -15,4 +15,5 @@
  | [Day 04:  Security Through Obscurity](https://adventofcode.com/2016/day/4) | :star::star: | [Solution](./Day04/Program.cs) | Regex and LINQ |
  | [Day 05:  How About a Nice Game of Chess?](https://adventofcode.com/2016/day/5) | :star::star: | [Solution](./Day05/Program.cs) | Use MD5 in Security.Cryptography |
  | [Day 06:  Signals and Noise](https://adventofcode.com/2016/day/6) | :star::star: | [Solution](./Day06/Program.cs) | Very easy with LINQ |
+ | [Day 07:  Internet Protocol Version 7](https://adventofcode.com/2016/day/7) | :star::star: | [Solution](./Day07/Program.cs) |  |
 
